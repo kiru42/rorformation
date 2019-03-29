@@ -83,3 +83,11 @@ volumes:
   redis:
   postgres:
 ```
+
+```bash
+# Run everything
+
+docker-compose up --build
+
+
+```
