@@ -22,7 +22,7 @@ RUN bundle install --binstubs
 
 COPY . .
 
-LABEL maintainer="Nick Janetakis <nick.janetakis@gmail.com>"
+LABEL maintainer="Kiruban PREMKUMAR <kiru42@gmail.com>"
 
 CMD puma -C config/puma.rb
 ```
@@ -40,7 +40,7 @@ services:
 
   redis:
     image: 'redis:4.0-alpine'
-    command: redis-server --requirepass yourpassword
+    command: redis-server --requirepass labiloute
     volumes:
       - 'redis:/data'
 
