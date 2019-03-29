@@ -127,3 +127,18 @@ docker-compose up --build
 ```
 
 - I've then updated `RACK_TIMEOUT_SERVICE_TIMEOUT=30` and removed `REQUEST_TIMEOUT=30`.
+
+### Dealing with database
+
+```bash
+docker-compose exec postgres bash
+
+# in the container
+su postgres
+psql
+
+# now you are connected to the db
+> \l
+> \c rorformation_development
+> \dt
+```
