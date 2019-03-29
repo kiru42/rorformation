@@ -1,5 +1,16 @@
 # DOCUMENTATION
 
+## Documentation Rails
+
+- https://guides.rubyonrails.org
+- https://api.rubyonrails.org
+- https://stackoverflow.com/questions/tagged/ruby-on-rails
+- https://github.com/rails/rails
+- https://weblog.rubyonrails.org/
+- https://guides.rubyonrails.org/active_record_migrations.html
+- https://guides.rubyonrails.org/active_record_basics.html
+- https://guides.rubyonrails.org/active_record_validations.html
+
 ## Docker & Rails
 
 - https://nickjanetakis.com/blog/dockerize-a-rails-5-postgres-redis-sidekiq-action-cable-app-with-docker-compose
