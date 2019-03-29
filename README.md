@@ -125,3 +125,5 @@ echo "REQUEST_TIMEOUT=30" > .env
 docker-compose stop
 docker-compose up --build
 ```
+
+- I've then updated `RACK_TIMEOUT_SERVICE_TIMEOUT=30` and removed `REQUEST_TIMEOUT=30`.
