@@ -256,3 +256,38 @@ irb(main):018:0> p.update(name: "Au revoir")
 irb(main):019:0> p
 => #<Post id: 2, name: "Au revoir", content: "Ceci n'est qu'un aurevoir...", created_at: "2019-03-30 00:34:43", updated_at: "2019-03-30 00:36:30">
 ```
+
+### Dealing with controllers
+
+```bash
+# creating a controller & action
+docker-compose exec website rails g controller Posts index
+```
+
+```ruby
+Rails.application.routes.draw do
+  # ...
+  get '/articles', to: 'posts#index', as: 'posts'
+end
+```
+
+```ruby
+class PostsController < ApplicationController
+  def index
+    @posts = Post.all
+  end
+end
+```
+
+```erb
+<h1 class="text-center">Articles</h1>
+
+<hr />
+
+<% @posts.each do |post| %>
+<h2><%= post.name %></h2>
+<p>
+<%= post.content %>
+</p>
+<% end %>
+```
