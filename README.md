@@ -207,20 +207,52 @@ end
 # running console
 docker-compose exec website rails c
 
+# Rails console
+
+# Reloading models etc...
+
 irb(main):002:0> reload!
 Reloading...
 => true
-irb(main):003:0> Post.new
-=> #<Post id: nil, name: nil, content: nil, created_at: nil, updated_at: nil>
-irb(main):004:0> post = Post.new
-=> #<Post id: nil, name: nil, content: nil, created_at: nil, updated_at: nil>
-irb(main):005:0> post = "Introduction"
-=> "Introduction"
+
+# Creating a post
 irb(main):006:0> post = Post.new
 => #<Post id: nil, name: nil, content: nil, created_at: nil, updated_at: nil>
 irb(main):007:0> post.name = "Introduction"
 => "Introduction"
 irb(main):008:0> post.content = "Bienvenue sur ce super site"
 => "Bienvenue sur ce super site"
-irb(main):009:0>
+irb(main):009:0> post.save
+   (0.7ms)  BEGIN
+  Post Create (1.8ms)  INSERT INTO "posts" ("name", "content", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["name", "Introduction"], ["content", "Bienvenue sur ce super site"], ["created_at", "2019-03-30 00:31:00.541605"], ["updated_at", "2019-03-30 00:31:00.541605"]]
+   (1.6ms)  COMMIT
+=> true
+
+# Find a post
+irb(main):011:0> Post.find(1)
+  Post Load (1.5ms)  SELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT $2  [["id", 1], ["LIMIT", 1]]
+=> #<Post id: 1, name: "Introduction", content: "Bienvenue sur ce super site", created_at: "2019-03-30 00:31:00", updated_at: "2019-03-30 00:31:00">
+irb(main):012:0> Post.last
+  Post Load (0.7ms)  SELECT  "posts".* FROM "posts" ORDER BY "posts"."id" DESC LIMIT $1  [["LIMIT", 1]]
+=> #<Post id: 1, name: "Introduction", content: "Bienvenue sur ce super site", created_at: "2019-03-30 00:31:00", updated_at: "2019-03-30 00:31:00">
+
+# another way of creating a post
+irb(main):015:0> p = Post.create(name: 'Aurevoir', content: "Ceci n'est qu'un aurevoir...")
+   (0.9ms)  BEGIN
+  Post Create (1.4ms)  INSERT INTO "posts" ("name", "content", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["name", "Aurevoir"], ["content", "Ceci n'est qu'un aurevoir..."], ["created_at", "2019-03-30 00:34:43.230171"], ["updated_at", "2019-03-30 00:34:43.230171"]]
+   (2.6ms)  COMMIT
+=> #<Post id: 2, name: "Aurevoir", content: "Ceci n'est qu'un aurevoir...", created_at: "2019-03-30 00:34:43", updated_at: "2019-03-30 00:34:43">
+irb(main):016:0> p.id
+=> 2
+
+# Updating a post
+irb(main):017:0> p
+=> #<Post id: 2, name: "Aurevoir", content: "Ceci n'est qu'un aurevoir...", created_at: "2019-03-30 00:34:43", updated_at: "2019-03-30 00:34:43">
+irb(main):018:0> p.update(name: "Au revoir")
+   (0.5ms)  BEGIN
+  Post Update (1.0ms)  UPDATE "posts" SET "name" = $1, "updated_at" = $2 WHERE "posts"."id" = $3  [["name", "Au revoir"], ["updated_at", "2019-03-30 00:36:30.386805"], ["id", 2]]
+   (2.6ms)  COMMIT
+=> true
+irb(main):019:0> p
+=> #<Post id: 2, name: "Au revoir", content: "Ceci n'est qu'un aurevoir...", created_at: "2019-03-30 00:34:43", updated_at: "2019-03-30 00:36:30">
 ```
