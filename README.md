@@ -291,3 +291,38 @@ end
 </p>
 <% end %>
 ```
+
+### Adding Categories
+
+```bash
+# rails migration
+docker-compose exec website rails g migration CreateCategories name:string slug:string
+docker-compose exec website rails db:migrate
+```
+
+```ruby
+class CreateCategories < ActiveRecord::Migration[5.2]
+  def change
+    create_table :categories do |t|
+      t.string :name
+      t.string :slug
+    end
+  end
+end
+```
+
+```bash
+# rails generate model
+# we should skip migration with --skip
+docker-compose exec website rails g model Category --skip
+
+# creating controller with actions
+docker-compose exec website rails g controller Categories index show update destroy new edit
+```
+
+### Scaffold
+
+```bash
+docker-compose exec website rails g scaffold User username:string bio:text
+docker-compose exec website rails db:migrate
+```
