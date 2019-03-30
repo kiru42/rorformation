@@ -153,3 +153,43 @@ psql
 > \c rorformation_development
 > \dt
 ```
+
+### Generate Migrations
+
+```bash
+# create the migration
+docker-compose exec website rails generate migration CreatePosts title:string content:text
+
+# run db migration
+docker-compose exec website rails db:migrate
+
+# rollback migration
+docker-compose exec website rails db:rollback
+
+# create an updating migration
+docker-compose exec website rails generate migration RenamePostTitleToName
+docker-compose exec website rails db:migrate
+```
+
+```ruby
+class CreatePostsTable < ActiveRecord::Migration[5.2]
+  def change
+    create_table :posts do |t|
+      t.string :title
+      t.text :content
+    end
+  end
+end
+```
+
+```ruby
+class RenamePostTitleToName < ActiveRecord::Migration[5.2]
+  def change
+    change_table :posts do |t|
+      t.rename :title, :name
+    end
+  end
+end
+```
+
+- https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-add_column
