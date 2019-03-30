@@ -325,4 +325,8 @@ docker-compose exec website rails g controller Categories index show update dest
 ```bash
 docker-compose exec website rails g scaffold User username:string bio:text
 docker-compose exec website rails db:migrate
+
+# rollback scaffold
+docker-compose exec website rails db:rollback
+docker-compose exec website rails destroy scaffold User
 ```

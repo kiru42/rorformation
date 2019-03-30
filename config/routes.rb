@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  resources :users
   root 'posts#index'
   get '/salut/(:name)', to: 'pages#salut', as: 'salut'
   resources :posts
