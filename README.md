@@ -187,9 +187,40 @@ class RenamePostTitleToName < ActiveRecord::Migration[5.2]
   def change
     change_table :posts do |t|
       t.rename :title, :name
+      t.timestamps
     end
   end
 end
 ```
 
 - https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-add_column
+
+### Models
+
+```ruby
+class Post < ApplicationRecord
+
+end
+```
+
+```bash
+# running console
+docker-compose exec website rails c
+
+irb(main):002:0> reload!
+Reloading...
+=> true
+irb(main):003:0> Post.new
+=> #<Post id: nil, name: nil, content: nil, created_at: nil, updated_at: nil>
+irb(main):004:0> post = Post.new
+=> #<Post id: nil, name: nil, content: nil, created_at: nil, updated_at: nil>
+irb(main):005:0> post = "Introduction"
+=> "Introduction"
+irb(main):006:0> post = Post.new
+=> #<Post id: nil, name: nil, content: nil, created_at: nil, updated_at: nil>
+irb(main):007:0> post.name = "Introduction"
+=> "Introduction"
+irb(main):008:0> post.content = "Bienvenue sur ce super site"
+=> "Bienvenue sur ce super site"
+irb(main):009:0>
+```
