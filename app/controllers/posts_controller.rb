@@ -3,6 +3,7 @@ class PostsController < ApplicationController
   before_action :set_post, only: [:update, :edit, :show, :destroy]
 
   def index
+    session[:user_id] = {username: "Kiruban", id: "12"}
     @posts = Post.all
   end
 
@@ -13,8 +14,8 @@ class PostsController < ApplicationController
   end
 
   def update
-    post_params = params.require(:post).permit(:name, :content)
     @post.update(post_params)
+    flash[:success] = "Article modifié avec succès"
     redirect_to posts_path
   end
 

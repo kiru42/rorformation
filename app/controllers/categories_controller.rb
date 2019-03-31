@@ -3,6 +3,7 @@ class CategoriesController < ApplicationController
   before_action :set_category, only: [:edit, :update, :update, :show]
 
   def index
+    @session = session[:user_id]
     @categories = Category.all
   end
 
@@ -36,7 +37,7 @@ class CategoriesController < ApplicationController
     params.require(:category).permit(:name, :slug)
   end
 
-  def category
+  def set_category
     @category = Category.find(params[:id])
   end
 

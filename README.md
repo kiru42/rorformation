@@ -369,3 +369,64 @@ around_action do |controller|
   puts "Je suis après l'action"
 end
 ```
+
+### Dealing with sessions
+
+```ruby
+# session
+session[:user_id] = {username: "Kiruban", id: "12"}
+session[:success] = "Mise à jour effectuée."
+```
+
+```ruby
+# flash notice
+flash[:notice] = "Article modifié avec succès"
+
+# or in a redirect
+redirect_to posts_path, flash: {success: "Article modifié avec succès"}
+
+# shortcut, by default only alert & notice
+redirect_to posts_path, notice: "Article modifié avec succès"
+
+# we can add more with
+add_flash_types :warning, :danger, :error
+redirect_to posts_path, warning: "Article modifié avec succès"
+```
+
+```erb
+<% flash.each do |key, msg| %>
+  <% unless key == :timedout %>
+    <%= content_tag :div, class: "alert alert-dismissable alert-#{key}" do -%>
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+        &times;
+      </button>
+      <%= msg %>
+    <% end %>
+  <% end %>
+<% end %>
+```
+
+```ruby
+# cookies
+cookies[:username] = {
+  value: "OK",
+  expires: 1.month.from_now
+}
+
+cookies[:username] = {
+  value: JSON.generate({name: "Kiruban", email: "kk@gmail.com"}),
+  expires: 1.month.from_now
+}
+
+puts JSON.parse(cookies[:username]).inpect
+
+cookies.signed[:username] = "Kiruban"
+
+cookies.permanent.signed[:username] = "Kiruban"
+
+cookies.encrypted[:code_carte_bleue] = "1234"
+
+cookies.delete(:username)
+```
+
+- https://api.rubyonrails.org/v5.1.6.2/classes/ActionDispatch/Cookies.html
