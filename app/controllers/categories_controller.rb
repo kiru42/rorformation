@@ -1,4 +1,9 @@
 class CategoriesController < ApplicationController
+
+  before_action do |controller|
+    puts "Je suis avant l'action"
+  end
+
   def index
     @categories = Category.all
   end

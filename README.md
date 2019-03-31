@@ -330,3 +330,42 @@ docker-compose exec website rails db:migrate
 docker-compose exec website rails db:rollback
 docker-compose exec website rails destroy scaffold User
 ```
+
+### Dealing with controller filters
+
+```ruby
+
+# filters using syntactic sugar
+before_action :set_post, only: [:update, :edit, :show, :destroy]
+after_action :notification, only: [:update, :edit]
+around_action :around
+
+skip_before_action :verify_authenticity_toke, only: [:edit]
+
+# example of private method
+def set_post
+  @post = Post.find(params[:id])
+end
+
+# around action
+def around
+  puts "aaa"
+  yield
+  puts "zzz"
+end
+
+# filters as blocks
+before_action do |controller|
+  puts "Je suis avant l'action"
+end
+
+after_action do |controller|
+  puts "Je suis après l'action"
+end
+
+around_action do |controller|
+  puts "Je suis avant l'action"
+  yield
+  puts "Je suis après l'action"
+end
+```
