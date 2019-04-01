@@ -604,3 +604,69 @@ class Post < ApplicationRecord
   include Sluggable
 end
 ```
+
+### Scopes
+
+```bash
+docker-compose exec website rails g migration add_online_to_posts online:boolean
+```
+
+```ruby
+class AddOnlineToPosts < ActiveRecord::Migration[5.2]
+  def change
+    add_column :posts, :online, :boolean, default: false
+  end
+end
+```
+
+```bash
+docker-compose exec website rails db:migrate
+```
+
+```ruby
+# without scope
+Post.where(online: true).all
+
+# With scope
+Post.published.all
+
+# as class method
+def self.published
+  where(online: 1)
+end
+
+# as scope
+scope, :published, -> { where(online: true) }
+scope, :offline, -> { where(online: false) }
+scope, :alpha, -> { order(name: :asc) }
+
+# scopes
+Post.published.alpha.all
+Post.published.alpha.reorder(name: :desc).all
+Post.published.alpha.rewhere(online: 1).all
+
+# scopes with argument
+scope, :online, -> (online) { where(online: online) }
+Post.online(0).all
+
+# scopes returning false
+scope, :online, -> (online) { false }
+Post.online(0).all # still works
+
+# more advanced scope
+scope :online, -> (online) do
+  where(online: online) if online.is_a? Integer
+end
+Post.online(0).all
+Post.online("az").all # still works
+
+# global scope
+default_scope { order(created_at: :desc) }
+scope, :online, -> { where(online: 1) }
+
+# unscoped and unscope
+Post.online.unscoped.order(name: :desc).all
+Post.online.unscope(:order).order(name: :desc).all
+Post.where(online: 1, name: 'Abinaya').unscope(:where).all
+Post.where(online: 1, name: 'Abinaya').unscope(where: :name).all
+```
