@@ -14,9 +14,12 @@ class PostsController < ApplicationController
   end
 
   def update
-    @post.update(post_params)
-    flash[:success] = "Article modifié avec succès"
-    redirect_to posts_path
+    if @post.update(post_params)
+      flash[:success] = "Article modifié avec succès"
+      redirect_to posts_path
+    else
+      render 'edit'
+    end
   end
 
   def new

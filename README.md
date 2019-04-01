@@ -457,3 +457,97 @@ class Post < ApplicationRecord
   end
 end
 ```
+
+- https://github.com/rails/jbuilder
+
+### Validations
+
+```ruby
+class Post < ApplicationRecord
+  validates :name, presence: true
+  validates :name, presence: { message: 'ne dois pas être vide' }
+  validates :name, length: { is: 3..20 }
+
+  validates :name, format: { with: /\A[a-zA-Z]+\z/}
+  validates :name, uniqueness: true
+  validates :name, confirmation: true
+  validates :name, length: { is: 2 }, on: :create
+  validates :name, length: { is: 2 }, allow_blank: true
+  validates :name, length: { is: 2 }, allow_nil: true
+  validates :name, length: { is: 2 }, strict: true
+  validates :name, length: { is: 2 }, if: :check_content_2
+  validates :name, length: { is: 2 }, unless: :check_content_2
+  validates :name, length: { is: 2 }, unless: Proc.new { |record| record.content.length == 2 }
+
+
+  def check_content_2
+    content.length == 2
+  end
+
+end
+```
+
+- https://github.com/balexand/email_validato
+
+```ruby
+# gem 'email_validator'
+# bundle install
+validates :my_email_attribute, email: true
+```
+
+```ruby
+# custom validate
+validate :my_custom_validation
+
+def my_custom_validation
+  if name.length != 2
+    errors.add(:name, 'Le champs doit être de 2 caractères')
+    # OR / :not_2 permet de mieux traiter programatiquement
+    errors.add(:name, :not_2, { message: 'Le champs doit être de 2 caractères' })
+  end
+end
+```
+
+```ruby
+# in model
+
+validates_with NameValidator
+
+# custom validator : models/validators/name_validator.rb
+class NameValidator < ActiveModel::Validator
+  def validate(record)
+    if record.name.nil? || record.name.length != 2
+      record.errors.add(:name, :not_2, { message: 'Le champs doit être de 2 caractères'})
+    end
+    if record.content.nil? || record.content.length != 2
+      record.errors.add(:content, 'Le champs doit être de 2 caractères')
+    end   
+  end
+end
+
+# in config/application.rb
+
+   config.autoload_paths << "#{Rails.root}/app/models/validators"
+```
+
+```ruby
+# Another way with EachValidator
+# in model
+
+  validates :name, name: { message: "bloop error"}
+  validates :content, name: true
+
+# custom validator : models/validators/name_validator.rb
+class NameValidator < ActiveModel::EachValidator
+  def validate_each(record, attribute, value)
+    if value.nil? || value.length != 2
+      message = options[:message] || 'doit avoir 2 caractères'
+      record.errors.add(attribute, message)
+    end
+  end
+end
+
+# in config/application.rb
+
+   config.autoload_paths << "#{Rails.root}/app/models/validators"
+```

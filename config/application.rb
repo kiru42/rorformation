@@ -14,6 +14,7 @@ module Rorformation
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
 
+    config.autoload_paths << "#{Rails.root}/app/models/validators"
     # Set up logging to be the same in all environments but control the level
     # through an environment variable.
     config.log_level = ENV['LOG_LEVEL']
