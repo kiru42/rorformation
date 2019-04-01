@@ -551,3 +551,5 @@ end
 
    config.autoload_paths << "#{Rails.root}/app/models/validators"
 ```
+
+* https://guides.rubyonrails.org/active_record_validations.html 
