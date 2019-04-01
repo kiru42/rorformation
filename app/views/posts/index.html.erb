@@ -3,6 +3,9 @@
 <% @posts.each do |post| %>
 <h2><%= post.name %></h2>
 <p><%= post.content %></p>
+<% unless post.category.nil? %>
+<p>Category : <%= post.category.name %></p>
+<% end %>
 <p>
   <a href="<%= post_path(post.id) %>" class="btn btn-primary">Lire la suite...</a>
   <a href="<%= edit_post_path(post.id) %>" class="btn btn-warning">Editer</a>

@@ -670,3 +670,28 @@ Post.online.unscope(:order).order(name: :desc).all
 Post.where(online: 1, name: 'Abinaya').unscope(:where).all
 Post.where(online: 1, name: 'Abinaya').unscope(where: :name).all
 ```
+
+### Associations
+
+```bash
+docker-compose exec website rails g migration add_category_to_posts category:references
+docker-compose exec website rails db:migrate
+```
+
+```ruby
+class Post < ApplicationRecord
+  belongs_to :category
+end
+```
+
+```ruby
+class Category < ApplicationRecord
+  has_many :posts
+end
+```
+
+```ruby
+```
+
+- https://guides.rubyonrails.org/association_basics.html
+- https://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html
