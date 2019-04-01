@@ -27,8 +27,12 @@ class PostsController < ApplicationController
   end
 
   def create
-    post = Post.create(post_params)
-    redirect_to post_path(post.id)
+    @post = Post.new(post_params)
+    if @post.save
+      redirect_to post_path(@post.id)
+    else
+      render 'new'
+    end
   end
 
   def destroy
@@ -39,7 +43,7 @@ class PostsController < ApplicationController
   private
 
   def post_params
-    params.require(:post).permit(:name, :content)
+    params.require(:post).permit(:name, :content, :slug)
   end
 
   def set_post
