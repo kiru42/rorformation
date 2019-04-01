@@ -430,3 +430,30 @@ cookies.delete(:username)
 ```
 
 - https://api.rubyonrails.org/v5.1.6.2/classes/ActionDispatch/Cookies.html
+- https://guides.rubyonrails.org/action_controller_overview.html#session
+
+### Controllers, gérer plusieurs formats
+
+```ruby
+respond_to do |format|
+  format.html
+  format.json { render json: @posts}
+  format.xml { render xml: @posts}
+end
+```
+
+```ruby
+# custom json render in controller
+respond_to do |format|
+  format.json { render json: @posts.as_json(only: [:name, :created_at, :id])}
+end
+```
+
+```ruby
+# or custom json render in model
+class Post < ApplicationRecord
+  def as_json(options = nil)
+    super(only: [:name, :id, :created_at])
+  end
+end
+```
