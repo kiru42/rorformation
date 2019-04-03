@@ -636,9 +636,9 @@ def self.published
 end
 
 # as scope
-scope, :published, -> { where(online: true) }
-scope, :offline, -> { where(online: false) }
-scope, :alpha, -> { order(name: :asc) }
+scope :published, -> { where(online: true) }
+scope :offline, -> { where(online: false) }
+scope :alpha, -> { order(name: :asc) }
 
 # scopes
 Post.published.alpha.all
@@ -646,11 +646,11 @@ Post.published.alpha.reorder(name: :desc).all
 Post.published.alpha.rewhere(online: 1).all
 
 # scopes with argument
-scope, :online, -> (online) { where(online: online) }
+scope :online, -> (online) { where(online: online) }
 Post.online(0).all
 
 # scopes returning false
-scope, :online, -> (online) { false }
+scope :online, -> (online) { false }
 Post.online(0).all # still works
 
 # more advanced scope
@@ -662,7 +662,7 @@ Post.online("az").all # still works
 
 # global scope
 default_scope { order(created_at: :desc) }
-scope, :online, -> { where(online: 1) }
+scope :online, -> { where(online: 1) }
 
 # unscoped and unscope
 Post.online.unscoped.order(name: :desc).all
